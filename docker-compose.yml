@@ -1,0 +1,15 @@
+version: "3.7"
+
+services:
+  reportbro:
+    image: python:3
+    volumes:
+      - ./reportbro_server.py:/usr/src/app/reportbro_server.py
+      - ./fonts:/usr/src/app/fonts      
+    ports:
+      - "80:8000"
+    working_dir: /usr/src/app
+    command: /bin/sh -c "pip install reportbro-lib SQLAlchemy tornado && python reportbro_server.py" 
+
+
+
