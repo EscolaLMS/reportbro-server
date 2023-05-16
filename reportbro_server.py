@@ -19,6 +19,7 @@ from sqlalchemy import Table, Column, BLOB, Boolean, DateTime, Integer, String, 
 from sqlalchemy import func
 from reportbro import Report, ReportBroError
 
+
 SERVER_PORT = 8000
 SERVER_PATH = r"/reportbro/report/run"
 # keep max. 500 MB of generated pdf files in sqlite db
@@ -64,6 +65,7 @@ class MainHandler(tornado.web.RequestHandler):
                 bold_filename='fonts/open-sans/OpenSans-Bold.ttf',
                 italic_filename='fonts/open-sans/OpenSans-Italic.ttf',
                 bold_italic_filename='fonts/open-sans/OpenSans-BoldItalic.ttf',
+                uni=False
             )
         ]
 
@@ -92,10 +94,11 @@ class MainHandler(tornado.web.RequestHandler):
                 400, reason='outputFormat parameter missing or invalid')
         data = json_data.get('data')
         is_test_data = bool(json_data.get('isTestData'))
+        print(data)
 
-        try:
+        try:           
             report = Report(report_definition, data, is_test_data,
-                            additional_fonts=self.additional_fonts)
+                            additional_fonts=self.additional_fonts, encode_error_handling='ignore')
         except Exception as e:
             raise HTTPError(
                 400, reason='failed to initialize report: ' + str(e))
@@ -163,7 +166,7 @@ class MainHandler(tornado.web.RequestHandler):
                 data = json.loads(row['data'])
                 is_test_data = row['is_test_data']
                 report = Report(report_definition, data, is_test_data,
-                                additional_fonts=self.additional_fonts)
+                                additional_fonts=self.additional_fonts, encode_error_handling='ignore')
                 if report.errors:
                     raise HTTPError(400, reason='error generating report')
         else:
@@ -177,7 +180,7 @@ class MainHandler(tornado.web.RequestHandler):
                 raise HTTPError(
                     400, reason='report_definition or data missing')
             report = Report(report_definition, data, is_test_data,
-                            additional_fonts=self.additional_fonts)
+                            additional_fonts=self.additional_fonts, encode_error_handling='ignore')
             if report.errors:
                 raise HTTPError(400, reason='error generating report')
 
