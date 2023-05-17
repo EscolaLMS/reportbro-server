@@ -94,7 +94,6 @@ class MainHandler(tornado.web.RequestHandler):
                 400, reason='outputFormat parameter missing or invalid')
         data = json_data.get('data')
         is_test_data = bool(json_data.get('isTestData'))
-        print(data)
 
         try:           
             report = Report(report_definition, data, is_test_data,

@@ -5,6 +5,8 @@ EXPOSE 8000
 COPY /reportbro_server.py /usr/src/app/reportbro_server.py
 COPY /fonts /usr/src/app/fonts 
 
-RUN pip install reportbro-lib SQLAlchemy tornado
+RUN pip install reportbro-lib tornado
+RUN pip install --force-reinstall 'sqlalchemy<2.0.0'
+
 
 CMD python reportbro_server.py
