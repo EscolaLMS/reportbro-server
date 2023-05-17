@@ -1,15 +1,33 @@
 version: "3.7"
 
+networks:
+  reportbro:
+
 services:
   reportbro:
     image: python:3
     volumes:
       - ./reportbro_server.py:/usr/src/app/reportbro_server.py
       - ./fonts:/usr/src/app/fonts      
+    #ports:
+    #  - "80:8000"
+    working_dir: /usr/src/app
+    command: /bin/sh -c "pip install reportbro-lib sqlalchemy tornado && pip install --force-reinstall 'sqlalchemy<2.0.0' && python reportbro_server.py" 
+    networks:
+      - reportbro
+
+  php-poc: 
+    image: php:8.2    
+    volumes:
+      - '.:/application'
     ports:
       - "80:8000"
-    working_dir: /usr/src/app
-    command: /bin/sh -c "pip install reportbro-lib SQLAlchemy tornado && python reportbro_server.py" 
+    working_dir: /application
+    command: php -S 0.0.0.0:8000
+    networks:
+      - reportbro
+
+
 
 
 

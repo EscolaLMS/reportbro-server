@@ -1,0 +1,15 @@
+{
+    "name": "mateuszwojczal/reportbro-server",
+    "autoload": {
+        "psr-4": {
+            "Mateuszwojczal\\ReportbroServer\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Mateusz Wojczal",
+            "email": "mateusz@wojczal.com"
+        }
+    ],
+    "require": {}
+}
